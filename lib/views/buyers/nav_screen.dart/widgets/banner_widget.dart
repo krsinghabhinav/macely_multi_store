@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class BannerWidget extends StatefulWidget {
   const BannerWidget({super.key});
@@ -97,7 +99,7 @@ class _BannerWidgetState extends State<BannerWidget> {
     return Column(
       children: [
         Container(
-          height: 140,
+          height: 160,
           width: double.infinity,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 224, 223, 222),
@@ -118,9 +120,23 @@ class _BannerWidgetState extends State<BannerWidget> {
                   itemBuilder: (context, index) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Image.network(
-                        _bannerImage[index],
+                      child: CachedNetworkImage(
+                        imageUrl: _bannerImage[index],
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => Shimmer(
+                          duration: Duration(seconds: 3), //Default value
+                          interval: Duration(
+                              seconds: 5), //Default value: Duration(seconds: 0)
+                          color: Colors.white, //Default value
+                          colorOpacity: 0, //Default value
+                          enabled: true, //Default value
+                          direction:
+                              ShimmerDirection.fromLTRB(), //Default Value
+                          child: Container(
+                            color: const Color.fromARGB(255, 246, 245, 247),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     );
                   },

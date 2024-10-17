@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:bestproviderproject/controllers/auth_controller.dart';
 import 'package:bestproviderproject/utils/show_snackBar.dart';
 import 'package:bestproviderproject/views/buyers/auth/login_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
@@ -18,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String fullName;
   late String password;
   late String phoneNumber;
+  Uint8List? _image;
   bool _isloading = false;
 
   _signUser() async {
@@ -26,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
     if (_formKey.currentState!.validate()) {
       await _authController
-          .signUpUsers(email, fullName, phoneNumber, password)
+          .signUpUsers(email, fullName, phoneNumber, password, _image!)
           .whenComplete(() {
         setState(() {
           _formKey.currentState!.reset();
@@ -53,6 +58,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  selectGalleryImage() async {
+    Uint8List im =
+        await _authController.pickerProfileImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  selectCamaraImage() async {
+    Uint8List im = await _authController.pickerProfileImage(ImageSource.camera);
+    setState(() {
+      _image = im;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,14 +92,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                CircleAvatar(
-                  radius: 64,
-                  backgroundColor: Colors.yellow.shade900,
-                  child: Icon(
-                    Icons.person,
-                    size: 100,
+                Stack(children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundColor: Colors.yellow.shade900,
+                          backgroundImage: MemoryImage(_image!),
+                          // child: Icon(
+                          //   Icons.person,
+                          //   size: 100,
+                          // ),
+                        )
+                      : CircleAvatar(
+                          radius: 64,
+                          backgroundColor: Colors.yellow.shade900,
+                          child: Icon(
+                            Icons.person,
+                            size: 90,
+                          ),
+                        ),
+                  Positioned(
+                    right: 0,
+                    top: 70,
+                    child: IconButton(
+                      onPressed: () {
+                        selectGalleryImage();
+                      },
+                      icon: Icon(
+                        CupertinoIcons.photo,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                    // right: 0,
+                    top: 70,
+                    left: 0,
+                    right: 90,
+                    child: IconButton(
+                      onPressed: () {
+                        selectCamaraImage();
+                      },
+                      icon: Icon(
+                        CupertinoIcons.camera,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ]),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextFormField(

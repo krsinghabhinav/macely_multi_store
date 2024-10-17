@@ -1,14 +1,14 @@
-import 'package:bestproviderproject/urbanfeattest/AddEditNoteScreen.dart';
-import 'package:bestproviderproject/urbanfeattest/notelist_screen.dart';
-import 'package:bestproviderproject/urbanfeattest/phone_auth.dart';
+import 'package:bestproviderproject/filtercity.dart';
+import 'package:bestproviderproject/views/buyers/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'views/buyers/auth/register_screen.dart';
-import 'views/buyers/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'views/buyers/main_screen.dart';
+import 'views/buyers/nav_screen.dart/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: ' Brand-Bold',
       ),
-      home: NoteListScreen(),
+      home: MainScreen(),
     );
   }
 }

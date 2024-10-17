@@ -1,5 +1,7 @@
 import 'package:bestproviderproject/utils/show_snackBar.dart';
+import 'package:bestproviderproject/views/buyers/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../controllers/auth_controller.dart';
 
@@ -16,13 +18,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String email;
   late String password;
+  bool isloading = false;
 
   _loginUser() async {
+    setState(() {
+      isloading = true;
+    });
     if (_formKey.currentState!.validate()) {
-      await _authController.loginUser(email, password);
-      return showSnack(context, "You are now logged in ",
-          color: const Color.fromARGB(255, 16, 129, 20));
+      String res = await _authController.loginUser(email, password);
+      if (res == 'success') {
+        showSnack(context, "You are now logged in ",
+            color: const Color.fromARGB(255, 16, 129, 20));
+        return Get.to(MainScreen());
+      } else {
+        setState(() {
+          isloading = false;
+        });
+        return showSnack(context, res, color: Colors.red);
+      }
     } else {
+      setState(() {
+        isloading = false;
+      });
+
       return showSnack(context, "Please fill all the field ",
           color: Colors.red);
     }
@@ -49,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   email = value;
                 },
@@ -106,16 +125,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.yellow.shade900,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        letterSpacing: 1,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                ),
+                child: isloading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ))
+                    : Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                              letterSpacing: 1,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                      ),
               ),
             ),
             Row(
