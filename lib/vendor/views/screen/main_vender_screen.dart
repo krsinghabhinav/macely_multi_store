@@ -1,3 +1,8 @@
+import 'package:bestproviderproject/vendor/views/screen/earning_screen.dart';
+import 'package:bestproviderproject/vendor/views/screen/edit_product_screen.dart';
+import 'package:bestproviderproject/vendor/views/screen/upload_screen.dart';
+import 'package:bestproviderproject/vendor/views/screen/vendor_logout_screen.dart';
+import 'package:bestproviderproject/vendor/views/screen/vendor_order_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +15,14 @@ class MainVenderScreen extends StatefulWidget {
 
 class _MainVenderScreenState extends State<MainVenderScreen> {
   int _pageIndex = 0;
+
+  List<Widget> _tabsPages = [
+    EarningScreen(),
+    UploadScreen(),
+    EditProductScreen(),
+    VendorOrderScreen(),
+    VendorLogoutScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +47,7 @@ class _MainVenderScreenState extends State<MainVenderScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'LOGOUT'),
         ],
       ),
+      body: _tabsPages[_pageIndex],
     );
   }
 }
