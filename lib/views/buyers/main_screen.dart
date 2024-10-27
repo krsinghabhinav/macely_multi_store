@@ -28,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        // type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: (value) {
           setState(() {

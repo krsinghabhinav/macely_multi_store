@@ -1,14 +1,12 @@
-import 'package:bestproviderproject/filtercity.dart';
-import 'package:bestproviderproject/views/buyers/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import 'views/buyers/auth/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'views/buyers/main_screen.dart';
-import 'views/buyers/nav_screen.dart/home_screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'vendor/views/screen/main_vender_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +32,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: ' Brand-Bold',
       ),
-      home: MainScreen(),
+      home: MainVenderScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }
