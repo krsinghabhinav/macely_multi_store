@@ -1,18 +1,19 @@
 import 'package:bestproviderproject/utils/show_snackBar.dart';
+import 'package:bestproviderproject/views/buyers/auth/register_screen.dart';
 import 'package:bestproviderproject/views/buyers/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/auth_controller.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class BuyerLoginScreen extends StatefulWidget {
+  const BuyerLoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<BuyerLoginScreen> createState() => _BuyerLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _BuyerLoginScreenState extends State<BuyerLoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
 
@@ -154,7 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (contex) => BuyerRegisterScreen()));
+                    },
                     child: Text(
                       "Register",
                       style: TextStyle(

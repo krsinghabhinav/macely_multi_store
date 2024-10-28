@@ -1,3 +1,5 @@
+import 'package:bestproviderproject/views/buyers/auth/login_screen.dart';
+import 'package:bestproviderproject/views/buyers/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: ' Brand-Bold',
       ),
-      home: MainVenderScreen(),
+      home: BuyerLoginScreen(),
       builder: EasyLoading.init(),
     );
   }

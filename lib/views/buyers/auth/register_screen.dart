@@ -274,7 +274,7 @@ class _BuyerRegisterScreenState extends State<BuyerRegisterScreen> {
                     TextButton(
                         onPressed: () {
                           Get.to(
-                            LoginScreen(),
+                            BuyerLoginScreen(),
                           );
                         },
                         child: Text(

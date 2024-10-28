@@ -16,7 +16,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     HomeScreen(),
     CategoriesScreen(),
     StoreScreen(),
@@ -24,50 +24,75 @@ class _MainScreenState extends State<MainScreen> {
     SearchScreen(),
     AccountScreen()
   ];
+
+  Future<bool> _onWillPop() async {
+    // Agar home page pe ho, toh back button press karne par exit nahi hoga
+    if (_selectedIndex == 0) {
+      return true; // App band ho jayegi
+    } else {
+      setState(() {
+        _selectedIndex = 0; // Home page pe navigate karein
+      });
+      return false; // Back button ka default action nahi chalega
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: (value) {
-          setState(() {
-            _selectedIndex = value;
-          });
-        },
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.yellow.shade900,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'HOME',
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          onTap: (value) {
+            setState(() {
+              _selectedIndex = value;
+            });
+          },
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.yellow.shade900,
+          showUnselectedLabels: true, // Ensure unselected labels are shown
+          showSelectedLabels: true, // Ensure selected labels are shown
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'HOME',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/explore.svg"),
+              label: 'CATEGORIES',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                  "assets/icons/shop-minimalistic-svgrepo-com.svg"),
+              label: 'STORE',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                  "assets/icons/cart-shopping-svgrepo-com.svg"),
+              label: 'CART',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset("assets/icons/search-svgrepo-com (1).svg"),
+              label: 'SEARCH',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                  "assets/icons/account-circle-svgrepo-com.svg"),
+              label: 'ACCOUNT',
+            ),
+          ],
+          selectedLabelStyle: TextStyle(
+            fontSize: 10, // Size for selected label
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/explore.svg"),
-            label: 'CATEGORIES',
+          unselectedLabelStyle: TextStyle(
+            fontSize: 8, // Size for unselected label
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-                "assets/icons/shop-minimalistic-svgrepo-com.svg"),
-            label: 'STORE',
-          ),
-          BottomNavigationBarItem(
-            icon:
-                SvgPicture.asset("assets/icons/cart-shopping-svgrepo-com.svg"),
-            label: 'CART',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/search-svgrepo-com (1).svg"),
-            label: 'SEARCH',
-          ),
-          BottomNavigationBarItem(
-            icon:
-                SvgPicture.asset("assets/icons/account-circle-svgrepo-com.svg"),
-            label: 'ACCOUNT',
-          ),
-        ],
+        ),
+        body: _pages[_selectedIndex],
       ),
-      body: _pages[_selectedIndex],
     );
   }
 }

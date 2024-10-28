@@ -9,7 +9,6 @@ class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  String? profileName;
 
   uploadProfileImage(Uint8List image) async {
     Reference ref =
@@ -32,7 +31,7 @@ class AuthController {
 
   Future<String> signUpUsers(String email, String fullName, String phoneNumber,
       String password, Uint8List? image) async {
-    String res = "Somr error occured";
+    String res = "Some error occured";
 
     try {
       if (email.isNotEmpty &&
