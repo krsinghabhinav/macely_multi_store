@@ -1,7 +1,9 @@
 import 'package:bestproviderproject/vendor/views/screen/upload_tap_screens/general_screen.dart';
 import 'package:bestproviderproject/vendor/views/screen/upload_tap_screens/images_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../provider/product_provider.dart';
 import 'upload_tap_screens/attribute_screen.dart';
 import 'upload_tap_screens/shipping_screen.dart';
 
@@ -15,6 +17,8 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
+    final ProductProvider _productProvider =
+        Provider.of<ProductProvider>(context);
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -48,6 +52,22 @@ class _UploadScreenState extends State<UploadScreen> {
             ImagesScreen()
           ],
         ),
+
+        // bottomSheet: ElevatedButton(
+        //   onPressed: () {
+        //     print(_productProvider.productData['productName']);
+        //     print(_productProvider.productData['productPrice']);
+        //     print(_productProvider.productData['quantity']);
+        //     print(_productProvider.productData['category']);
+        //     print(_productProvider.productData['scheduleDate']);
+        //     print(_productProvider.productData['description']);
+        //   },
+        //   style: ElevatedButton.styleFrom(
+        //     backgroundColor: Colors.red,
+        //     foregroundColor: Colors.white,
+        //   ),
+        //   child: Text('Save'),
+        // ),
       ),
     );
   }
