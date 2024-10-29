@@ -11,7 +11,11 @@ class GeneralScreen extends StatefulWidget {
   State<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _GeneralScreenState extends State<GeneralScreen> {
+class _GeneralScreenState extends State<GeneralScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String? selectedItem;
@@ -25,7 +29,10 @@ class _GeneralScreenState extends State<GeneralScreen> {
       print("categories product==============${querySnapshot.docs}");
       querySnapshot.docs.forEach((docs) {
         print(docs.data());
-        _categoryList.add(docs['categoryName']);
+        setState(() {
+          _categoryList.add(docs['categoryName']);
+        });
+
         print("categories product==============${docs['categoryName']}");
       });
     });
@@ -45,6 +52,7 @@ class _GeneralScreenState extends State<GeneralScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider =
         Provider.of<ProductProvider>(context);
 
@@ -56,37 +64,61 @@ class _GeneralScreenState extends State<GeneralScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                  onChanged: (value) {
-                    _productProvider.getFormData(productName: value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Enter Product Name',
-                    labelText: 'Enter Product Name',
-                  )),
+                onChanged: (value) {
+                  _productProvider.getFormData(productName: value);
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter Product Name',
+                  labelText: 'Enter Product Name',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter Product Name';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
               SizedBox(
                 height: 20,
               ),
               TextFormField(
-                  onChanged: (value) {
-                    double? changeDouble = double.parse(value);
+                onChanged: (value) {
+                  double? changeDouble = double.parse(value);
 
-                    _productProvider.getFormData(productPrice: changeDouble);
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Enter Product Price',
-                    labelText: 'Enter Product Price',
-                  )),
+                  _productProvider.getFormData(productPrice: changeDouble);
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter Product Price',
+                  labelText: 'Enter Product Price',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter Product Price';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
               SizedBox(
                 height: 20,
               ),
               TextFormField(
-                  onChanged: (value) {
-                    _productProvider.getFormData(quantity: int.parse(value));
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Enter Product Quantity',
-                    labelText: 'Enter Product Quantity',
-                  )),
+                onChanged: (value) {
+                  _productProvider.getFormData(quantity: int.parse(value));
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter Product Quantity',
+                  labelText: 'Enter Product Quantity',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter Product Quantity';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -99,10 +131,12 @@ class _GeneralScreenState extends State<GeneralScreen> {
                   );
                 }).toList(),
                 onChanged: (newValue) {
-                  selectedItem = newValue;
-                  _productProvider.getFormData(category: selectedItem);
-
-                  print('Selected value: $newValue');
+                  setState(() {
+                    selectedItem = newValue; // Update local selected item
+                    _productProvider.getFormData(
+                        category: selectedItem); // Update provider
+                    print('Selected value: $newValue');
+                  });
                 },
                 decoration: InputDecoration(
                   hintText: 'Select Category',
@@ -122,6 +156,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
                   labelText: 'Product Description',
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter Product Description';
+                  } else {
+                    return null;
+                  }
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,30 +197,30 @@ class _GeneralScreenState extends State<GeneralScreen> {
                     )
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  print(_productProvider.productData['productName']);
-                  print(_productProvider.productData['productPrice']);
-                  print(_productProvider.productData['quantity']);
-                  print(_productProvider.productData['category']);
-                  print(_productProvider.productData['scheduleDate']);
-                  print(_productProvider.productData['description']);
-                  print(_productProvider.productData['description']);
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                ),
-                child: Text(
-                  'Save',
-                  style: TextStyle(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 18),
-                ),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     print(_productProvider.productData['productName']);
+              //     print(_productProvider.productData['productPrice']);
+              //     print(_productProvider.productData['quantity']);
+              //     print(_productProvider.productData['category']);
+              //     print(_productProvider.productData['scheduleDate']);
+              //     print(_productProvider.productData['description']);
+              //     print(_productProvider.productData['description']);
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     elevation: 4,
+              //     shape: ContinuousRectangleBorder(
+              //         borderRadius: BorderRadius.circular(20)),
+              //     backgroundColor: Colors.red,
+              //     foregroundColor: Colors.white,
+              //   ),
+              //   child: Text(
+              //     'Save',
+              //     style: TextStyle(
+              //         color: const Color.fromARGB(255, 255, 255, 255),
+              //         fontSize: 18),
+              //   ),
+              // ),
             ],
           ),
         ),
