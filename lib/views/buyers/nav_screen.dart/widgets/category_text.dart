@@ -1,3 +1,4 @@
+import 'package:bestproviderproject/views/buyers/nav_screen.dart/widgets/home_product_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -9,14 +10,7 @@ class CategoryText extends StatefulWidget {
 }
 
 class _CategoryTextState extends State<CategoryText> {
-  final List<String> _categoriesLabel = [
-    'Food',
-    'Vegetable',
-    'Egg',
-    'Tea',
-    'Coffee',
-  ];
-
+  String? _selectedCategory;
   final Stream<QuerySnapshot> _categoryStream =
       FirebaseFirestore.instance.collection('categories').snapshots();
 
@@ -33,7 +27,7 @@ class _CategoryTextState extends State<CategoryText> {
         const SizedBox(height: 6),
         // Setting a fixed height for the StreamBuilder's ListView
         SizedBox(
-          height: 100, // Adjust based on how many items you expect
+          height: 50, // Adjust based on how many items you expect
           child: StreamBuilder<QuerySnapshot>(
             stream: _categoryStream,
             builder:
@@ -48,14 +42,19 @@ class _CategoryTextState extends State<CategoryText> {
                 return const Center(child: Text("No data available"));
               }
 
+              // Set the selected category to the first category when data is received
+              if (_selectedCategory == null) {
+                _selectedCategory = snapshot.data!.docs[0]['categoryName'];
+              }
+
               return Container(
-                height: 40, // Height is now consistent
+                height: 50, // Height is now consistent
                 child: Row(
                   children: [
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _categoriesLabel.length,
+                        itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           final categoryData = snapshot.data!.docs[index];
                           return Padding(
@@ -63,7 +62,13 @@ class _CategoryTextState extends State<CategoryText> {
                               horizontal: 3.0,
                             ),
                             child: ActionChip(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  _selectedCategory =
+                                      categoryData['categoryName'];
+                                });
+                                print(_selectedCategory);
+                              },
                               backgroundColor: Colors.yellow.shade900,
                               label: Text(
                                 categoryData['categoryName'],
@@ -88,8 +93,9 @@ class _CategoryTextState extends State<CategoryText> {
             },
           ),
         ),
-
-        // Horizontal ListView for categories with consistent height
+        // Display the HomeProductWidget based on the selected category
+        if (_selectedCategory != null)
+          HomeProductWidget(categoryName: _selectedCategory!),
       ],
     );
   }

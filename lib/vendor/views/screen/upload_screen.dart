@@ -88,9 +88,9 @@ class _UploadScreenState extends State<UploadScreen> {
                 }).whenComplete(() {});
                 print(
                     "chargeshipping value ===========${_productProvider.productData['chargeShipping']}");
+                EasyLoading.dismiss();
                 _productProvider.clearData();
                 _formKey.currentState!.reset();
-                EasyLoading.dismiss();
 
                 Navigator.push(
                   context,

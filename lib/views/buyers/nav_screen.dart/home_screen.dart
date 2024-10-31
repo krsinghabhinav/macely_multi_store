@@ -2,6 +2,7 @@ import 'package:bestproviderproject/views/buyers/nav_screen.dart/widgets/banner_
 import 'package:flutter/material.dart';
 
 import 'widgets/category_text.dart';
+import 'widgets/home_product_widget.dart';
 import 'widgets/search_input_widget.dart';
 import 'widgets/welcome_text_widget.dart';
 
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             BannerWidget(),
             CategoryText(),
+            // HomeProductWidget(),
           ],
         ),
       ),

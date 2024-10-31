@@ -157,7 +157,7 @@ class _AttributeScreenState extends State<AttributeScreen>
                 foregroundColor: Colors.white,
               ),
               child: Text(
-                _isSave ? 'Saved Size' : 'Save Size',
+                _isSave ? 'Saved' : 'Save',
                 style: const TextStyle(fontSize: 18),
               ),
             ),
