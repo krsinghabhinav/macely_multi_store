@@ -1,6 +1,11 @@
+import 'package:bestproviderproject/notesapp/note_main_screen.dart';
+import 'package:bestproviderproject/notesapp/providers/signup_provider.dart';
+import 'package:bestproviderproject/notesapp/signin_screen.dart';
 import 'package:bestproviderproject/provider/product_provider.dart';
 import 'package:bestproviderproject/views/buyers/auth/login_screen.dart';
 import 'package:bestproviderproject/views/buyers/main_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,6 +15,8 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'notesapp/providers/createnote_provider.dart';
+import 'notesapp/providers/signIn_provider.dart';
 import 'vendor/views/screen/main_vender_screen.dart';
 
 void main() async {
@@ -20,8 +27,23 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  User? user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    print("user==========${user}");
+    print("user==========${user!.uid.toString()}");
+  }
 
   // This widget is the root of your application.
   @override
@@ -31,6 +53,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ProductProvider()),
+          ChangeNotifierProvider(create: (_) => SignUpProvider()),
+          ChangeNotifierProvider(create: (_) => SingInProvider()),
+          ChangeNotifierProvider(create: (_) => CreatenoteProvider()),
         ],
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -40,7 +65,8 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             fontFamily: ' Brand-Bold',
           ),
-          home: MainScreen(),
+          // home: NotesHomeScreen(),
+          home: user != null ? NoteMainScreen() : NotesHomeScreen(),
           builder: EasyLoading.init(),
         ));
   }

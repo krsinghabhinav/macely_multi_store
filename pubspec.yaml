@@ -56,6 +56,7 @@ dependencies:
   provider: ^6.1.2
   uuid: ^4.5.1
   photo_view: ^0.15.0
+  firebase_database: ^11.1.4
 
 dev_dependencies:
   flutter_test:
