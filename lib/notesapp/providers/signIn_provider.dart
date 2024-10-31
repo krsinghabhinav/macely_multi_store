@@ -51,8 +51,8 @@ class SingInProvider with ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('SignIn successful!')),
       );
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => NoteMainScreen()));
+      setIsLoading(false);
+      notifyListeners();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('SignIn failed: $e')),

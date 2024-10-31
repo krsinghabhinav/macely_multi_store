@@ -88,6 +88,8 @@ class SignUpProvider with ChangeNotifier {
       setPhone('');
       setEmail('');
       setPassword('');
+      _isLoading = false;
+      notifyListeners();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Signup failed: $e')),

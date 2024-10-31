@@ -12,39 +12,39 @@ class CreateNotesScreen extends StatefulWidget {
 class _CreateNotesScreenState extends State<CreateNotesScreen> {
   @override
   Widget build(BuildContext context) {
-    final CreatenoteProvider createnoteProvider =
-        Provider.of<CreatenoteProvider>(context);
+    final createnoteProvider = Provider.of<CreatenoteProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Notes'),
         backgroundColor: Colors.blue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              maxLines: null,
-              onChanged: (value) {
-                createnoteProvider.setCreateNotes(value);
-              },
-              decoration: InputDecoration(
-                labelText: 'Add Notes',
-                // border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              TextFormField(
+                maxLines: null,
+                onChanged: (value) {
+                  createnoteProvider.setCreateNotes(value);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Add Notes',
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
+              const SizedBox(height: 20),
+              ElevatedButton(
                 onPressed: () {
+                  // Only call `getCreateNotes`, as it already manages navigation
                   createnoteProvider.getCreateNotes(context);
                 },
-                child: Text('Add Notes'))
-          ],
+                child: createnoteProvider.isloading
+                    ? CircularProgressIndicator()
+                    : Text('Add Notes'),
+              ),
+            ],
+          ),
         ),
       ),
     );

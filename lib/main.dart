@@ -16,6 +16,7 @@ import 'firebase_options.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'notesapp/providers/createnote_provider.dart';
+import 'notesapp/providers/delete_provider.dart';
 import 'notesapp/providers/signIn_provider.dart';
 import 'vendor/views/screen/main_vender_screen.dart';
 
@@ -38,11 +39,15 @@ class _MyAppState extends State<MyApp> {
   User? user;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-    print("user==========${user}");
-    print("user==========${user!.uid.toString()}");
+
+    if (user != null) {
+      print("user==========${user}");
+      print("user==========${user!.uid.toString()}");
+    } else {
+      print("No user logged in.");
+    }
   }
 
   // This widget is the root of your application.
@@ -56,6 +61,7 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => SignUpProvider()),
           ChangeNotifierProvider(create: (_) => SingInProvider()),
           ChangeNotifierProvider(create: (_) => CreatenoteProvider()),
+          ChangeNotifierProvider(create: (_) => DeleteProvider()),
         ],
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -63,7 +69,7 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
-            fontFamily: ' Brand-Bold',
+            fontFamily: 'Brand-Bold',
           ),
           // home: NotesHomeScreen(),
           home: user != null ? NoteMainScreen() : NotesHomeScreen(),
